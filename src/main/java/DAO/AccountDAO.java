@@ -32,6 +32,52 @@ public class AccountDAO {
         return null;
     }
 
+    public Account getAccountById(int account_id) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "SELECT * FROM account WHERE account_id ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, account_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account(
+                    resultSet.getInt("account_id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password")
+                );
+                return account;
+            }
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public Account getAccountByUsername(String username) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "SELECT * FROM account WHERE username = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account(
+                    resultSet.getInt("account_id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password")
+                );
+                return account;
+            }
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
     public Account getAccountByUsernameAndPassword(String username, String password) {
         Connection connection = ConnectionUtil.getConnection();
 

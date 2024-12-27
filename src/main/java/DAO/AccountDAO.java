@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import Model.Account;
 
@@ -15,7 +16,7 @@ public class AccountDAO {
 
         try {
             String sql = "INSERT INTO account (username, password) VALUES (?, ?);" ;
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
             preparedStatement.executeUpdate();
@@ -36,7 +37,7 @@ public class AccountDAO {
         Connection connection = ConnectionUtil.getConnection();
 
         try {
-            String sql = "SELECT * FROM account WHERE account_id ?;";
+            String sql = "SELECT * FROM account WHERE account_id = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, account_id);
             ResultSet resultSet = preparedStatement.executeQuery();
